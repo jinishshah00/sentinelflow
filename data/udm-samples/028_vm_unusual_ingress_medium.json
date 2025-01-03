@@ -1,0 +1,17 @@
+{
+  "id": "214b1acb-ac67-481b-9c74-8f65698d7ea6",
+  "event_type": "compute.firewall.ingress",
+  "principal": "user:alice@corp.example.com",
+  "target": "projects/acme-secops/serviceAccounts/ci-deployer",
+  "network": "10.114.242.169/32",
+  "severity_hint": "medium",
+  "labels": [
+    "network",
+    "ingress",
+    "nic",
+    "asn"
+  ],
+  "description": "Unusual ingress observed to VM NIC from unfamiliar ASN from AS15169",
+  "ts": "2025-09-05T23:16:04.8618079Z",
+  "y": "medium"
+}

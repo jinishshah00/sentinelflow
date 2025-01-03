@@ -1,0 +1,16 @@
+{
+  "id": "ec593ba4-1aae-4a26-ba71-c8edb36cf9e2",
+  "event_type": "storage.objects.delete.bulk",
+  "principal": "user:alice@corp.example.com",
+  "target": "projects/acme-secops/serviceAccounts/ci-deployer",
+  "network": "10.56.62.133/32",
+  "severity_hint": "high",
+  "labels": [
+    "storage",
+    "delete",
+    "bulk"
+  ],
+  "description": "Burst of object deletions detected in short window",
+  "ts": "2025-09-10T23:56:04.8618079Z",
+  "y": "high"
+}

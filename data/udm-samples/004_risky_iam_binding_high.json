@@ -1,0 +1,17 @@
+{
+  "id": "e1db0a7b-3c8c-4528-9816-b1d5d5bc993e",
+  "event_type": "iam.setIamPolicy.bindingAdd",
+  "principal": "user:erin@corp.example.com",
+  "target": "projects/acme-stg/instances/api-02",
+  "network": "10.205.56.139/32",
+  "severity_hint": "high",
+  "labels": [
+    "iam",
+    "policy",
+    "role",
+    "elevated"
+  ],
+  "description": "IAM binding added granting elevated role role=roles/iam.serviceAccountKeyAdmin",
+  "ts": "2025-09-08T19:30:04.8618079Z",
+  "y": "high"
+}

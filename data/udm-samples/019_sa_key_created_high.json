@@ -1,0 +1,16 @@
+{
+  "id": "f49f7ec9-1bd2-4160-8319-e4f857fb05da",
+  "event_type": "iam.serviceAccountKeys.create",
+  "principal": "user:carol@corp.example.com",
+  "target": "projects/acme-prod/buckets/site-assets",
+  "network": "10.222.147.15/32",
+  "severity_hint": "high",
+  "labels": [
+    "serviceAccount",
+    "key",
+    "credential"
+  ],
+  "description": "New service account key created outside change window",
+  "ts": "2025-09-05T11:04:04.8618079Z",
+  "y": "high"
+}

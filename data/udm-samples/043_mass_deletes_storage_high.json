@@ -1,0 +1,16 @@
+{
+  "id": "99e1b076-cd4b-4aa8-9363-29d9262f617b",
+  "event_type": "storage.objects.delete.bulk",
+  "principal": "user:alice@corp.example.com",
+  "target": "projects/acme-prod/buckets/site-assets",
+  "network": "10.119.12.74/32",
+  "severity_hint": "high",
+  "labels": [
+    "storage",
+    "delete",
+    "bulk"
+  ],
+  "description": "Burst of object deletions detected in short window",
+  "ts": "2025-09-06T13:51:04.8618079Z",
+  "y": "high"
+}

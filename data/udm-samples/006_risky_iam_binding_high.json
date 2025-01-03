@@ -1,0 +1,17 @@
+{
+  "id": "ec9f868d-ddaa-40e4-a5f3-9d37051c5a8e",
+  "event_type": "iam.setIamPolicy.bindingAdd",
+  "principal": "user:dave@corp.example.com",
+  "target": "projects/acme-prod/instances/web-01",
+  "network": "10.12.217.174/32",
+  "severity_hint": "high",
+  "labels": [
+    "iam",
+    "policy",
+    "role",
+    "elevated"
+  ],
+  "description": "IAM binding added granting elevated role role=roles/editor",
+  "ts": "2025-09-06T06:36:04.8618079Z",
+  "y": "high"
+}

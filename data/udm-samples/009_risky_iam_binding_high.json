@@ -1,0 +1,17 @@
+{
+  "id": "cdb727ae-a60b-43bb-a8f2-273597074214",
+  "event_type": "iam.setIamPolicy.bindingAdd",
+  "principal": "user:carol@corp.example.com",
+  "target": "projects/acme-secops/serviceAccounts/ci-deployer",
+  "network": "10.189.224.231/32",
+  "severity_hint": "high",
+  "labels": [
+    "iam",
+    "policy",
+    "role",
+    "elevated"
+  ],
+  "description": "IAM binding added granting elevated role role=roles/iam.serviceAccountKeyAdmin",
+  "ts": "2025-09-10T09:56:04.8618079Z",
+  "y": "high"
+}

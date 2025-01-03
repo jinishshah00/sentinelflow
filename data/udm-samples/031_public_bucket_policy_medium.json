@@ -1,0 +1,17 @@
+{
+  "id": "17d0f4a2-a46f-4748-bb7a-0b8f52c193b6",
+  "event_type": "storage.setIamPolicy.public",
+  "principal": "user:bob@corp.example.com",
+  "target": "projects/acme-prod/buckets/site-assets",
+  "network": "10.239.200.157/32",
+  "severity_hint": "medium",
+  "labels": [
+    "storage",
+    "bucket",
+    "policy",
+    "public"
+  ],
+  "description": "Bucket policy changed to allow public read",
+  "ts": "2025-09-09T03:59:04.8618079Z",
+  "y": "medium"
+}

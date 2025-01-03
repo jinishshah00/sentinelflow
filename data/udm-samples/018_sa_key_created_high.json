@@ -1,0 +1,16 @@
+{
+  "id": "2f96d1a1-29cb-4a04-a131-084de45a696d",
+  "event_type": "iam.serviceAccountKeys.create",
+  "principal": "user:alice@corp.example.com",
+  "target": "projects/acme-prod/instances/web-01",
+  "network": "10.254.245.3/32",
+  "severity_hint": "high",
+  "labels": [
+    "serviceAccount",
+    "key",
+    "credential"
+  ],
+  "description": "New service account key created outside change window",
+  "ts": "2025-09-10T03:23:04.8618079Z",
+  "y": "high"
+}

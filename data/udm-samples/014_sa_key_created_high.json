@@ -1,0 +1,16 @@
+{
+  "id": "9dcd0c8b-229d-422c-a1a0-581355eb7483",
+  "event_type": "iam.serviceAccountKeys.create",
+  "principal": "user:erin@corp.example.com",
+  "target": "projects/acme-secops/serviceAccounts/ci-deployer",
+  "network": "10.184.160.120/32",
+  "severity_hint": "high",
+  "labels": [
+    "serviceAccount",
+    "key",
+    "credential"
+  ],
+  "description": "New service account key created outside change window",
+  "ts": "2025-09-10T01:57:04.8618079Z",
+  "y": "high"
+}

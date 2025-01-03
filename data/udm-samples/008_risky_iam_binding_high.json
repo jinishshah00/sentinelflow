@@ -1,0 +1,17 @@
+{
+  "id": "979ca6b8-6152-4355-b35f-4faeb662203c",
+  "event_type": "iam.setIamPolicy.bindingAdd",
+  "principal": "user:alice@corp.example.com",
+  "target": "projects/acme-prod/buckets/site-assets",
+  "network": "10.187.147.104/32",
+  "severity_hint": "high",
+  "labels": [
+    "iam",
+    "policy",
+    "role",
+    "elevated"
+  ],
+  "description": "IAM binding added granting elevated role role=roles/iam.serviceAccountKeyAdmin",
+  "ts": "2025-09-05T02:51:04.8618079Z",
+  "y": "high"
+}
