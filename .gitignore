@@ -1,0 +1,22 @@
+# Go
+/bin/
+/dist/
+/out/
+*.test
+coverage.*
+# Node
+node_modules/
+.next/
+*.log
+# Env
+.env
+.env.*
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+# OS
+.DS_Store
+Thumbs.db
+
