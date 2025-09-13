@@ -1,0 +1,18 @@
+# cloudbuild.yaml
+substitutions:
+  _AR: 'REPLACEME'   # will be overridden by --substitutions flag
+
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ['build','-f','docker/triage-go.Dockerfile','-t','$_AR/triage-go:dev','.' ]
+
+- name: gcr.io/cloud-builders/docker
+  args: ['build','-f','docker/actions-go.Dockerfile','-t','$_AR/actions-go:dev','.' ]
+
+- name: gcr.io/cloud-builders/docker
+  args: ['build','-f','docker/api-go.Dockerfile','-t','$_AR/api-go:dev','.' ]
+
+images:
+- '$_AR/triage-go:dev'
+- '$_AR/actions-go:dev'
+- '$_AR/api-go:dev'

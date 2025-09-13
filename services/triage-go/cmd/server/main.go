@@ -6,8 +6,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -70,24 +72,27 @@ func main() {
 		log.Fatal("GOOGLE_CLOUD_PROJECT must be set")
 	}
 
-	// classifier: train from data/udm-samples
+	// classifier: train from data dir (works both local & Cloud Run)
 	nb = classifier.New(1.0)
 	var train []shared.LabeledEvent
 	root, _ := os.Getwd()
-	dir := root + "/data/udm-samples"
-	entries, err := os.ReadDir(dir)
-	check(err)
+	dataDir := getenv("DATA_DIR", root+"/data/udm-samples")
+
+	entries, err := os.ReadDir(dataDir)
+	if err != nil {
+		log.Fatalf("cannot read training data dir %q: %v", dataDir, err)
+	}
 	for _, e := range entries {
 		if e.IsDir() || !strings.HasSuffix(e.Name(), ".json") {
 			continue
 		}
-		b := must(os.ReadFile(dir + "/" + e.Name()))
+		b := must(os.ReadFile(dataDir + "/" + e.Name()))
 		var le shared.LabeledEvent
 		check(json.Unmarshal(b, &le))
 		train = append(train, le)
 	}
 	nb.Train(train)
-	log.Printf("triage-go: trained on %d labeled events", len(train))
+	log.Printf("triage-go: trained on %d labeled events (dir=%s)", len(train), dataDir)
 
 	// clients
 	fsClient = must(firestore.NewClient(ctx, projectID))
@@ -105,22 +110,44 @@ func main() {
 		})
 	})
 
-	// Pub/Sub push endpoint (used after we deploy to Cloud Run)
+	// optional: make "/" return something simple
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("triage-go alive"))
+	})
+
 	mux.HandleFunc("/pubsub/push", handlePush)
 
-	addr := ":" + getenv("PORT", "8080")
-	go func() {
-		log.Printf("triage-go listening on %s", addr)
-		check(http.ListenAndServe(addr, mux))
-	}()
-
-	// Local dev puller: subscribe to alerts.raw via SUBSCRIPTION_PULL
+	// start optional puller first so it runs alongside the server
 	if devPull {
 		go runPuller(ctx)
 	}
 
-	// block forever
-	select {}
+	// graceful shutdown watcher
+	port := getenv("PORT", "8080")
+	srv := &http.Server{
+		Addr:              ":" + port,
+		Handler:           mux,
+		ReadHeaderTimeout: 10 * time.Second,
+	}
+
+	go func() {
+		ch := make(chan os.Signal, 1)
+		signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
+		<-ch
+		log.Printf("shutting down http server")
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		if err := srv.Shutdown(shCtx); err != nil {
+			log.Printf("http shutdown error: %v", err)
+		}
+	}()
+
+	log.Printf("triage-go listening on :%s", port)
+	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("ListenAndServe error: %v", err)
+	}
+
 }
 
 func handlePush(w http.ResponseWriter, r *http.Request) {
