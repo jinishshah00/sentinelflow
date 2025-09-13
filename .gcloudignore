@@ -1,16 +1,12 @@
-@'
-# Keep upload simple; do NOT inherit .gitignore
 .gcloudignore
 .git/
 
-# heavy/local stuff we never need to upload
 **/.terraform/
 **/.next/
 **/node_modules/
 **/dist/
 **/build/
 
-# always include our sources, Dockerfiles and metadata
 !services/**
 !internal/**
 !docker/**
@@ -18,4 +14,3 @@
 !go.mod
 !go.sum
 !cloudbuild.yaml
-'@ | Set-Content -NoNewline .gcloudignore

@@ -1,13 +1,9 @@
-@'
-# VCS & OS clutter
 .git
 **/.DS_Store
 
-# Heavy local build artifacts (do NOT exclude our Go sources)
 **/.terraform/
 **/.next/
 **/node_modules/
 **/dist/
 **/build/
 **/*.log
-'@ | Set-Content -NoNewline .dockerignore
