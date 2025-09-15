@@ -22,39 +22,39 @@
 
 ```mermaid
 flowchart LR
-    subgraph GCP[Google Cloud Project: sentinalflow (us-central1)]
-      direction LR
+  subgraph GCP[Google Cloud project sentinalflow (us-central1)]
+    direction LR
 
-      subgraph PubSub[Pub/Sub]
-        RAW[Topic: alerts.raw]
-        TRIAGED[Topic: alerts.triaged]
-        ACTQ[Topic: actions.queue]
-      end
-
-      subgraph CR[Cloud Run]
-        TRIAGE[Service: triage-go (private)]
-        ACTIONS[Service: actions-go (private)]
-        API[Service: api-go (public + X-API-Key)]
-      end
-
-      subgraph FS[Firestore]
-        ALERTS[(Collection: alerts)]
-      end
-
-      %% Subscriptions (push)
-      RAW -->|push (OIDC: triage-sa, aud=triage URL)| TRIAGE
-      ACTQ -->|push (OIDC: actions-sa, aud=actions URL)| ACTIONS
-
-      %% Triage behavior
-      TRIAGE -->|write| ALERTS
-      TRIAGE -->|publish| TRIAGED
-
-      %% API reads
-      API -->|query| ALERTS
+    subgraph PubSub[PubSub]
+      RAW[Topic — alerts.raw]
+      TRIAGED[Topic — alerts.triaged]
+      ACTQ[Topic — actions.queue]
     end
 
-    EXTGEN[Producers / generator-go] -->|JSON events| RAW
-    RULES[Rules / API / ops] -->|action requests| ACTQ
+    subgraph CR[Cloud Run]
+      TRIAGE[Service — triage-go (private)]
+      ACTIONS[Service — actions-go (private)]
+      API[Service — api-go (public + X-API-Key)]
+    end
+
+    subgraph FS[Firestore]
+      ALERTS[(Collection — alerts)]
+    end
+
+    %% Subscriptions (push)
+    RAW -->|push (OIDC: triage-sa, aud=triage URL)| TRIAGE
+    ACTQ -->|push (OIDC: actions-sa, aud=actions URL)| ACTIONS
+
+    %% Triage behavior
+    TRIAGE -->|write| ALERTS
+    TRIAGE -->|publish| TRIAGED
+
+    %% API reads
+    API -->|query| ALERTS
+  end
+
+  EXTGEN[Producers / generator-go] -->|JSON events| RAW
+  RULES[Rules / API / ops] -->|action requests| ACTQ
 ```
 
 ---
