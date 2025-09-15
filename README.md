@@ -20,7 +20,7 @@
 
 ## System diagram
 
-```mermaid
+
 flowchart LR
   subgraph GCP[Google Cloud project sentinalflow (us-central1)]
     direction LR
@@ -55,7 +55,7 @@ flowchart LR
 
   EXTGEN[Producers / generator-go] -->|JSON events| RAW
   RULES[Rules / API / ops] -->|action requests| ACTQ
-```
+
 
 ---
 
