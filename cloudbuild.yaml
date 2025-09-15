@@ -1,4 +1,3 @@
-# cloudbuild.yaml
 substitutions:
   _AR: 'REPLACEME'   # will be overridden by --substitutions flag
 

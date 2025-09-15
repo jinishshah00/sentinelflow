@@ -1,11 +1,14 @@
 import { NextRequest } from "next/server";
 
 const API_BASE = process.env.API_BASE!;
-const API_KEY = process.env.API_KEY!;
+const API_KEY  = process.env.API_KEY!;
+
+type Ctx = { params: Promise<{ path: string[] }> };
 
 // GET /api/sf/<path>
-export async function GET(req: NextRequest, { params }: { params: { path: string[] } }) {
-  const url = `${API_BASE}/${params.path.join("/")}${req.nextUrl.search}`;
+export async function GET(req: NextRequest, ctx: Ctx) {
+  const { path } = await ctx.params;                       // <-- await params
+  const url = `${API_BASE}/${path.join("/")}${req.nextUrl.search}`;
   const res = await fetch(url, {
     headers: { "X-API-Key": API_KEY },
     cache: "no-store",
@@ -18,8 +21,9 @@ export async function GET(req: NextRequest, { params }: { params: { path: string
 }
 
 // POST /api/sf/<path>
-export async function POST(req: NextRequest, { params }: { params: { path: string[] } }) {
-  const url = `${API_BASE}/${params.path.join("/")}${req.nextUrl.search}`;
+export async function POST(req: NextRequest, ctx: Ctx) {
+  const { path } = await ctx.params;                       // <-- await params
+  const url = `${API_BASE}/${path.join("/")}${req.nextUrl.search}`;
   const body = await req.text();
   const res = await fetch(url, {
     method: "POST",
