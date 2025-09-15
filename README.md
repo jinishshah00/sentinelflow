@@ -20,42 +20,39 @@
 
 ## System diagram
 
-
+```mermaid
 flowchart LR
-  subgraph GCP[Google Cloud project sentinalflow (us-central1)]
+  subgraph GCP[Google Cloud project sentinalflow / us-central1]
     direction LR
 
-    subgraph PubSub[PubSub]
-      RAW[Topic — alerts.raw]
-      TRIAGED[Topic — alerts.triaged]
-      ACTQ[Topic — actions.queue]
+    subgraph PUBSUB[PubSub]
+      RAW[topic: alerts.raw]
+      TRIAGED[topic: alerts.triaged]
+      ACTQ[topic: actions.queue]
     end
 
-    subgraph CR[Cloud Run]
-      TRIAGE[Service — triage-go (private)]
-      ACTIONS[Service — actions-go (private)]
-      API[Service — api-go (public + X-API-Key)]
+    subgraph RUN[Cloud Run]
+      TRIAGE[service: triage-go (private)]
+      ACTIONS[service: actions-go (private)]
+      API[service: api-go (public + X-API-Key)]
     end
 
-    subgraph FS[Firestore]
-      ALERTS[(Collection — alerts)]
+    subgraph DB[Firestore]
+      ALERTS[(collection: alerts)]
     end
 
-    %% Subscriptions (push)
-    RAW -->|push (OIDC: triage-sa, aud=triage URL)| TRIAGE
-    ACTQ -->|push (OIDC: actions-sa, aud=actions URL)| ACTIONS
+    RAW -- push OIDC --> TRIAGE
+    ACTQ -- push OIDC --> ACTIONS
 
-    %% Triage behavior
-    TRIAGE -->|write| ALERTS
-    TRIAGE -->|publish| TRIAGED
+    TRIAGE -- write --> ALERTS
+    TRIAGE -- publish --> TRIAGED
 
-    %% API reads
-    API -->|query| ALERTS
+    API -- query --> ALERTS
   end
 
-  EXTGEN[Producers / generator-go] -->|JSON events| RAW
-  RULES[Rules / API / ops] -->|action requests| ACTQ
-
+  EXTGEN[Producers / generator-go] --> RAW
+  RULES[Rules / API / ops] --> ACTQ
+```
 
 ---
 
