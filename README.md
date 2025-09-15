@@ -22,36 +22,39 @@
 
 ```mermaid
 flowchart LR
-  subgraph GCP[Google Cloud project sentinalflow / us-central1]
+  subgraph gcp["Google Cloud project: sentinalflow / us-central1"]
     direction LR
 
-    subgraph PUBSUB[PubSub]
-      RAW[topic: alerts.raw]
-      TRIAGED[topic: alerts.triaged]
-      ACTQ[topic: actions.queue]
+    subgraph pubsub["Pub/Sub"]
+      raw["topic: alerts.raw"]
+      triaged["topic: alerts.triaged"]
+      actq["topic: actions.queue"]
     end
 
-    subgraph RUN[Cloud Run]
-      TRIAGE[service: triage-go (private)]
-      ACTIONS[service: actions-go (private)]
-      API[service: api-go (public + X-API-Key)]
+    subgraph run["Cloud Run"]
+      triage["service: triage-go (private)"]
+      actions["service: actions-go (private)"]
+      api["service: api-go (public + X-API-Key)"]
     end
 
-    subgraph DB[Firestore]
-      ALERTS[(collection: alerts)]
+    subgraph db["Firestore"]
+      alerts[("collection: alerts")]
     end
 
-    RAW -- push OIDC --> TRIAGE
-    ACTQ -- push OIDC --> ACTIONS
+    %% push subscriptions (OIDC)
+    raw -->|push OIDC| triage
+    actq -->|push OIDC| actions
 
-    TRIAGE -- write --> ALERTS
-    TRIAGE -- publish --> TRIAGED
+    %% triage behavior
+    triage -->|write| alerts
+    triage -->|publish| triaged
 
-    API -- query --> ALERTS
+    %% api reads
+    api -->|query| alerts
   end
 
-  EXTGEN[Producers / generator-go] --> RAW
-  RULES[Rules / API / ops] --> ACTQ
+  extgen["Producers / generator-go"] --> raw
+  rules["Rules / API / ops"] --> actq
 ```
 
 ---
